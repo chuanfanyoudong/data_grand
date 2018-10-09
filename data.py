@@ -27,6 +27,8 @@ class GrandDataset(data.Dataset):
     def __init__(self, path, text_field, label_field, text_type='word', test=False, aug=False, **kwargs):
         fields = [('text', text_field), ('label', label_field)]
         examples = []
+        print("path"*10)
+        print(path)
         csv_data = pd.read_csv(path)
         print('read data from {}'.format(path))
 
@@ -73,9 +75,9 @@ def load_data(opt):
     train_path = opt.data_path + opt.text_type + '/train_set.csv'
     val_path = opt.data_path + opt.text_type + '/val_set.csv'
     test_path = opt.data_path + opt.text_type + '/test_set.csv'
-    train_path = 'D:/git/dataset/val_set.csv'
-    test_path = 'D:/git/dataset/val_set.csv'
-    val_path = 'D:/git/dataset/val_set.csv'
+    train_path = 'util/word/train_set.csv'
+    test_path = 'util/word/test_set.csv'
+    val_path = 'util/word/val_set.csv'
 
     # aug for data augmentation
     if opt.aug:
@@ -88,10 +90,11 @@ def load_data(opt):
     cache = '.vector_cache'
     if not os.path.exists(cache):
         os.mkdir(cache)
-    embedding_path = '{}/{}_{}.txt'.format(opt.embedding_path, opt.text_type, opt.embedding_dim)
+    embedding_path = '{}/{}_{}_.txt'.format(opt.embedding_path, opt.text_type, opt.embedding_dim)
+
     vectors = Vectors(name=embedding_path, cache=cache)
     print('load word2vec vectors from {}'.format(embedding_path))
-    vectors.unk_init = init.xavier_uniform_  # 没有命中的token的初始化方式
+    vectors.unk_init = init.xavier_uniform  # 没有命中的token的初始化方式
 
     # 构建Vocab
     print('building {} vocabulary......'.format(opt.text_type))

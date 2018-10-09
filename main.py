@@ -25,6 +25,9 @@ t1 = time.time()
 def main(**kwargs):
     args = DefaultConfig()
     args.parse(kwargs)
+    args.model = 'LSTM'
+    args.device = 0
+    args.id = 'word4'
     if not torch.cuda.is_available():
         args.cuda = False
         args.device = None
@@ -99,7 +102,7 @@ def main(**kwargs):
             torch.save(checkpoint, save_path)
             print('Best tmp model f1score: {}'.format(best_score))
         if f1score < best_score:
-            model.load_state_dict(torch.load(save_path)['state_dict'])
+            model.load_state_dict(torch.load(save_path, map_location={'cuda:5':'cuda:0'})['state_dict'])
             lr1 *= args.lr_decay
             lr2 = 2e-4 if lr2 == 0 else lr2 * 0.8
             optimizer = model.get_optimizer(lr1, lr2, 0)
@@ -155,14 +158,14 @@ def test(model, test_data, args):
     # 生成概率文件npy
     prob_cat = np.concatenate(probs_list, axis=0)
 
-    test = pd.read_csv('/data/yujun/datasets/daguanbei_data/test_set.csv')
+    test = pd.read_csv('data/test_set.csv')
     test_id = test['id'].copy()
     test_pred = pd.DataFrame({'id': test_id, 'class': result})
     test_pred['class'] = (test_pred['class'] + 1).astype(int)
 
     return prob_cat, test_pred
 
-
+#
 def val(model, dataset, args):
     # 计算模型在验证集上的分数
 
@@ -192,4 +195,5 @@ def val(model, dataset, args):
 
 
 if __name__ == '__main__':
-    fire.Fire()
+    main()
+    # fire.Fire()

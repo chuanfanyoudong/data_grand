@@ -38,8 +38,8 @@ class DefaultConfig(object):
     # train_data_path = 'D:/git/dataset/val_set.csv'
     # test_data_path = 'D:/git/dataset/val_set.csv'
     # val_data_path = 'D:/git/dataset/val_set.csv'
-    embedding_path = 'D:/git/emb'  # 预训练词向量的位置
-    embedding_dim = 100
+    embedding_path = '/home/zkjiang/iflytekwork/data_grand/emb_build/'  # 预训练词向量的位置
+    embedding_dim = 300
 
     batch_size = 64
     vocab_size = 10000  # 词库规模，配置中写的值没有意义，实际是预处理阶段获取

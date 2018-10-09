@@ -2,9 +2,11 @@ import pandas as pd
 import numpy as np
 import random
 
-train_data = pd.read_csv('/data/yujun/captain/datasets1/train_set.csv')
-val_data = pd.read_csv('/data/yujun/captain/datasets1/val_set.csv')
-test_data = pd.read_csv('/data/yujun/datasets/daguanbei_data/test_set.csv')
+train_data_ = pd.read_csv('../data/train_set.csv')
+train_data_.sample(frac= 1)
+train_data = train_data_[:1000]
+val_data = train_data_[1000:2000]
+test_data = pd.read_csv('../data/test_set.csv')
 print('raw data loaded!')
 
 train_data[['word_seg', 'class']].to_csv('word/train_set.csv')
